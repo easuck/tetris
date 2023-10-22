@@ -1,13 +1,21 @@
-import java.awt.*;
+package logic;
+
+import gui.GamePanel;
+import mino.Block;
+
+import java.util.ArrayList;
 
 public class GameManager implements Runnable{
 
     private Thread gameThread;
     private GamePanel gamePanel;
-    private final static int fps = 60;
+    private ArrayList<Block> blocks;
+    public final static int fps = 60;
+    public final static int autoDropInterval = fps;
 
     public GameManager(){
         gamePanel = new GamePanel();
+        blocks = new ArrayList<>();
     }
 
     public void launchGame(){
@@ -25,7 +33,7 @@ public class GameManager implements Runnable{
             currentTime = System.currentTimeMillis();
             delta += (currentTime - lastTime) / drawInterval;
             lastTime = currentTime;
-            if(delta >= 1){
+            if(delta >= 1000){
                 gamePanel.update();
                 gamePanel.repaint();
                 delta--;

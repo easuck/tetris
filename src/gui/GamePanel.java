@@ -1,3 +1,7 @@
+package gui;
+
+import mino.Block;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -11,6 +15,8 @@ public class GamePanel extends JPanel {
     public static int right_x;
     public static int top_y;
     public static int bottom_y;
+
+    Block testBlock = new Block(Color.BLUE);
 
     public GamePanel(){
         this.setPreferredSize(new Dimension(windowWidth, windowHeight));
@@ -29,13 +35,15 @@ public class GamePanel extends JPanel {
     }
 
     public void update(){
-
+        testBlock.update();
     }
 
     public void paintComponent(Graphics g){
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
         drawGameField(g2);
+        testBlock.draw(g2);
+        System.out.println("я отрисовал блок");
     }
 
 }

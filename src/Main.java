@@ -1,3 +1,6 @@
+import gui.GamePanel;
+import logic.GameManager;
+
 import javax.swing.*;
 
 public class Main {
