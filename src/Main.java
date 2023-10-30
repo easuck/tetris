@@ -15,7 +15,7 @@ public class Main {
         window.setLocationRelativeTo(null);
         window.setVisible(true);
 
-        GameManager gameManager = new GameManager();
+        GameManager gameManager = new GameManager(panel);
         gameManager.launchGame();
     }
 }

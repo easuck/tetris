@@ -26,7 +26,6 @@ public class Block extends Rectangle {
         autoDropCounter++;
 
         if(autoDropCounter == GameManager.autoDropInterval){
-            x += 50;
             y += 50;
             autoDropCounter = 0;
         }

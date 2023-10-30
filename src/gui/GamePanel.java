@@ -36,6 +36,7 @@ public class GamePanel extends JPanel {
 
     public void update(){
         testBlock.update();
+        System.out.println("координаты " + testBlock.getX2() + " и " + testBlock.getY2());
     }
 
     public void paintComponent(Graphics g){
@@ -43,7 +44,7 @@ public class GamePanel extends JPanel {
         Graphics2D g2 = (Graphics2D) g;
         drawGameField(g2);
         testBlock.draw(g2);
-        System.out.println("я отрисовал блок");
+        //System.out.println("я отрисовал блок с координатами " + testBlock.getX2() + " и " + testBlock.getY2());
     }
 
 }

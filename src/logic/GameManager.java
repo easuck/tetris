@@ -8,13 +8,13 @@ import java.util.ArrayList;
 public class GameManager implements Runnable{
 
     private Thread gameThread;
-    private GamePanel gamePanel;
+    private GamePanel panel;
     private ArrayList<Block> blocks;
     public final static int fps = 60;
     public final static int autoDropInterval = fps;
 
-    public GameManager(){
-        gamePanel = new GamePanel();
+    public GameManager(GamePanel panel){
+        this.panel = panel;
         blocks = new ArrayList<>();
     }
 
@@ -33,9 +33,9 @@ public class GameManager implements Runnable{
             currentTime = System.currentTimeMillis();
             delta += (currentTime - lastTime) / drawInterval;
             lastTime = currentTime;
-            if(delta >= 1000){
-                gamePanel.update();
-                gamePanel.repaint();
+            if(delta >= 1){
+                panel.update();
+                panel.repaint();
                 delta--;
             }
         }
