@@ -8,7 +8,7 @@ import java.util.ArrayList;
 public class GameManager implements Runnable{
 
     private Thread gameThread;
-    private GamePanel panel;
+    private final GamePanel panel;
     private ArrayList<Block> blocks;
     public final static int fps = 60;
     public final static int autoDropInterval = fps;

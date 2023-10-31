@@ -1,6 +1,8 @@
 package gui;
 
 import mino.Block;
+import mino.Mino;
+import mino.Mino_L;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,8 +17,9 @@ public class GamePanel extends JPanel {
     public static int right_x;
     public static int top_y;
     public static int bottom_y;
-
-    Block testBlock = new Block(Color.BLUE);
+    public int start_x;
+    public int start_y;
+    Mino currentMino = new Mino_L();
 
     public GamePanel(){
         this.setPreferredSize(new Dimension(windowWidth, windowHeight));
@@ -26,6 +29,10 @@ public class GamePanel extends JPanel {
         right_x = left_x + gameWidth;
         top_y = (windowHeight / 2) - (gameHeight / 2);
         bottom_y = top_y + gameHeight;
+
+        start_x = left_x + (gameWidth / 2) - Block.size;
+        start_y = top_y + Block.size;
+        currentMino.setCoordinates(start_x, start_y);
     }
 
     public void drawGameField(Graphics2D g2){
@@ -35,16 +42,16 @@ public class GamePanel extends JPanel {
     }
 
     public void update(){
-        testBlock.update();
-        System.out.println("координаты " + testBlock.getX2() + " и " + testBlock.getY2());
+        currentMino.update();
     }
 
     public void paintComponent(Graphics g){
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
         drawGameField(g2);
-        testBlock.draw(g2);
-        //System.out.println("я отрисовал блок с координатами " + testBlock.getX2() + " и " + testBlock.getY2());
+        if (currentMino != null){
+            currentMino.draw(g2);
+        }
     }
 
 }
