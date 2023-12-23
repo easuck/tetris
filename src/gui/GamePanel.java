@@ -1,11 +1,11 @@
 package gui;
 
-import mino.Block;
-import mino.Mino;
-import mino.Mino_L;
+import controller.KeyHandler;
+import mino.*;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Random;
 
 public class GamePanel extends JPanel {
 
@@ -19,11 +19,13 @@ public class GamePanel extends JPanel {
     public static int bottom_y;
     public int start_x;
     public int start_y;
-    Mino currentMino = new Mino_L();
+    Mino currentMino = pickMino();
 
     public GamePanel(){
         this.setPreferredSize(new Dimension(windowWidth, windowHeight));
         this.setBackground(Color.BLACK);
+        this.addKeyListener(new KeyHandler());
+        this.setFocusable(true);
 
         left_x = (windowWidth / 2) - (gameWidth / 2);
         right_x = left_x + gameWidth;
@@ -33,6 +35,21 @@ public class GamePanel extends JPanel {
         start_x = left_x + (gameWidth / 2) - Block.size;
         start_y = top_y + Block.size;
         currentMino.setCoordinates(start_x, start_y);
+    }
+
+    public Mino pickMino(){
+        Mino mino = null;
+        int i = new Random().nextInt(7);
+        switch(i){
+            case 0: mino = new Mino_L(); break;
+            case 1: mino = new Mino_L_neg(); break;
+            case 2: mino = new Mino_square(); break;
+            case 3: mino = new Mino_bar(); break;
+            case 4: mino = new Mino_T(); break;
+            case 5: mino = new Mino_Z(); break;
+            case 6: mino = new Mino_Z_neg(); break;
+        }
+        return mino;
     }
 
     public void drawGameField(Graphics2D g2){

@@ -7,33 +7,21 @@ import java.awt.event.KeyListener;
 
 public class KeyHandler implements KeyListener {
 
-    private boolean downPressed, leftPressed, rightPressed;
-    private Mino minoObserver;
-
-    public void addMino(Mino mino){
-        this.minoObserver = mino;
-    }
-
-    public void notifyObserver(){
-        minoObserver
-    }
-
-    public void doCommands(){
-        while(true){
-            
-        }
-    }
+    public static boolean upPressed, downPressed, leftPressed, rightPressed;
 
     @Override
     public void keyPressed(KeyEvent e) {
         int code = e.getKeyCode();
-        if(code == KeyEvent.VK_A){
-            leftPressed = true;
+        if(code == KeyEvent.VK_W || code == KeyEvent.VK_UP){
+            upPressed = true;
         }
-        if(code == KeyEvent.VK_S){
+        if(code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN){
             downPressed = true;
         }
-        if(code == KeyEvent.VK_D){
+        if(code == KeyEvent.VK_A || code == KeyEvent.VK_LEFT){
+            leftPressed = true;
+        }
+        if(code == KeyEvent.VK_D || code == KeyEvent.VK_RIGHT){
             rightPressed = true;
         }
     }
