@@ -5,6 +5,7 @@ import mino.*;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.Random;
 
 public class GamePanel extends JPanel {
@@ -19,7 +20,9 @@ public class GamePanel extends JPanel {
     public static int bottom_y;
     public int start_x;
     public int start_y;
-    Mino currentMino = pickMino();
+    Mino currentMino;
+    //Mino nextMino;
+    public static ArrayList<Block> staticBlocks = new ArrayList<>();
 
     public GamePanel(){
         this.setPreferredSize(new Dimension(windowWidth, windowHeight));
@@ -34,6 +37,7 @@ public class GamePanel extends JPanel {
 
         start_x = left_x + (gameWidth / 2) - Block.size;
         start_y = top_y + Block.size;
+        currentMino = pickMino();
         currentMino.setCoordinates(start_x, start_y);
     }
 
@@ -52,14 +56,27 @@ public class GamePanel extends JPanel {
         return mino;
     }
 
+    public void update(){
+        if(!currentMino.isActive){
+            for (int i = 0; i < currentMino.blocks.length; i++){
+                staticBlocks.add(currentMino.blocks[i]);
+            }
+            currentMino = pickMino();
+            currentMino.setCoordinates(start_x, start_y);
+        }
+        currentMino.update();
+    }
+
     public void drawGameField(Graphics2D g2){
         g2.setColor(Color.WHITE);
         g2.setStroke(new BasicStroke(4));
         g2.drawRect(left_x - 4,  top_y - 4, gameWidth + 8, gameHeight + 8);
     }
 
-    public void update(){
-        currentMino.update();
+    public void drawStaticBlocks(Graphics2D g2){
+        for(int i = 0; i < staticBlocks.size(); i++){
+            staticBlocks.get(i).draw(g2);
+        }
     }
 
     public void paintComponent(Graphics g){
@@ -69,6 +86,7 @@ public class GamePanel extends JPanel {
         if (currentMino != null){
             currentMino.draw(g2);
         }
+        drawStaticBlocks(g2);
     }
 
 }

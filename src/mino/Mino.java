@@ -8,12 +8,13 @@ import java.awt.*;
 
 public class Mino {
 
-    protected Block[] blocks = new Block[4];
+    public Block[] blocks = new Block[4];
     protected Block[] tempBlocks = new Block[4];
     protected Color color;
     protected int autoDropCounter = 0;
     protected int direction = 1;
     protected boolean leftCollision, rightCollision, bottomCollision;
+    public boolean isActive = true;
 
     public void create(Color c){
         blocks[0] = new Block(c);
@@ -32,25 +33,52 @@ public class Mino {
     public void getDirection4(){};
 
     public void updateDirection(int direction){
-        this.direction = direction;
-        blocks[0].x = tempBlocks[0].x;
-        blocks[0].y = tempBlocks[0].y;
-        blocks[1].x = tempBlocks[1].x;
-        blocks[1].y = tempBlocks[1].y;
-        blocks[2].x = tempBlocks[2].x;
-        blocks[2].y = tempBlocks[2].y;
-        blocks[3].x = tempBlocks[3].x;
-        blocks[3].y = tempBlocks[3].y;
+        checkRotationCollision();
+        if (!leftCollision && !rightCollision && !bottomCollision){
+            this.direction = direction;
+            blocks[0].x = tempBlocks[0].x;
+            blocks[0].y = tempBlocks[0].y;
+            blocks[1].x = tempBlocks[1].x;
+            blocks[1].y = tempBlocks[1].y;
+            blocks[2].x = tempBlocks[2].x;
+            blocks[2].y = tempBlocks[2].y;
+            blocks[3].x = tempBlocks[3].x;
+            blocks[3].y = tempBlocks[3].y;
+        }
     }
 
     public void checkRotationCollision(){
+        leftCollision = false;
+        rightCollision = false;
+        bottomCollision = false;
 
+        checkStaticBlocksCollision();
+
+        for(int i = 0; i < blocks.length; i++){
+            if(tempBlocks[i].x < GamePanel.left_x){
+                leftCollision = true;
+            }
+        }
+
+        for(int i = 0; i < blocks.length; i++){
+            if(tempBlocks[i].x + Block.size > GamePanel.right_x){
+                rightCollision = true;
+            }
+        }
+
+        for(int i = 0; i < blocks.length; i++){
+            if(tempBlocks[i].y + Block.size > GamePanel.bottom_y){
+                bottomCollision = true;
+            }
+        }
     }
 
     public void checkMovementCollision(){
         leftCollision = false;
         rightCollision = false;
         bottomCollision = false;
+
+        checkStaticBlocksCollision();
 
         for(int i = 0; i < blocks.length; i++){
             if(blocks[i].x == GamePanel.left_x){
@@ -67,6 +95,31 @@ public class Mino {
         for(int i = 0; i < blocks.length; i++){
             if(blocks[i].y + Block.size == GamePanel.bottom_y){
                 bottomCollision = true;
+            }
+        }
+    }
+
+    public void checkStaticBlocksCollision(){
+        for(int i = 0; i < GamePanel.staticBlocks.size(); i++){
+            int targetX = GamePanel.staticBlocks.get(i).x;
+            int targetY = GamePanel.staticBlocks.get(i).y;
+
+            for(int j = 0; j < blocks.length; j++){
+                if(blocks[j].x == targetX && blocks[j].y + Block.size == targetY){
+                    bottomCollision = true;
+                }
+            }
+
+            for(int j = 0; j < blocks.length; j++){
+                if(blocks[j].x == targetX - Block.size && blocks[j].y == targetY){
+                    leftCollision = true;
+                }
+            }
+
+            for(int j = 0; j < blocks.length; j++){
+                if(blocks[j].x + Block.size == targetX && blocks[j].y == targetY){
+                    rightCollision = true;
+                }
             }
         }
     }
@@ -114,7 +167,12 @@ public class Mino {
             }
             KeyHandler.rightPressed = false;
         }
-        if (!bottomCollision) autoDrop();
+        if (bottomCollision){
+            isActive = false;
+        }
+        else{
+            autoDrop();
+        }
     }
 
     public void autoDrop(){
@@ -124,7 +182,6 @@ public class Mino {
                 blocks[i].y += 30;
             }
             autoDropCounter = 0;
-            System.out.println("координата У верхнего блока: " + blocks[1].y);
         }
     }
 

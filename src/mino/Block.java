@@ -15,9 +15,10 @@ public class Block extends Rectangle {
         y = 100;
     }
 
-    /*public void draw(Graphics2D g2){
+    public void draw(Graphics2D g2){
+        int padding = 2;
         g2.setColor(c);
-        g2.fillRect(x, y, size, size);
-    }*/
+        g2.fillRect(x + padding, y + padding, size - padding * 2, size - padding * 2);
+    }
 
 }
