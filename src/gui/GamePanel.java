@@ -58,25 +58,25 @@ public class GamePanel extends JPanel {
     public void deleteLineAndAutoDrop(Block[] minoBlocks){
         int counter = 0;
         int deletedLines = 0;
-        int blocksInLine = (left_x + gameWidth) / Block.size;
-        ArrayList<Block> blocksToDelete = new ArrayList<>();
+        int blocksInLine = gameWidth / Block.size;
 
         for(int i = 0; i < minoBlocks.length; i++){
             for(Block block : staticBlocks){
                 if(block.y == minoBlocks[i].y){
-                    blocksToDelete.add(block);
                     counter++;
                 }
             }
-            if(counter == blocksInLine - 1){
-                for(Block block : blocksToDelete){
-                    block = null;
+            System.out.println("для " + minoBlocks[i] + " блока " + counter + " блоков в линии");
+            if(counter == blocksInLine){
+                System.out.println("Я ПОПАЛ СЮДА");
+                for(int j = staticBlocks.size()-1; j > -1; j--){
+                    if(staticBlocks.get(j).y == minoBlocks[i].y){
+                        staticBlocks.remove(j);
+                    }
                 }
-                minoBlocks[i] = null;
                 deletedLines++;
             }
             counter = 0;
-            blocksToDelete = new ArrayList<>();
         }
 
         for(Block block : staticBlocks){
@@ -92,6 +92,7 @@ public class GamePanel extends JPanel {
             deleteLineAndAutoDrop(currentMino.blocks);
             currentMino = pickMino();
             currentMino.setCoordinates(start_x, start_y);
+            System.out.println(staticBlocks.size());
         }
         currentMino.update();
     }
