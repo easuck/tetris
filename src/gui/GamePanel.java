@@ -21,7 +21,6 @@ public class GamePanel extends JPanel {
     public int start_x;
     public int start_y;
     Mino currentMino;
-    //Mino nextMino;
     public static ArrayList<Block> staticBlocks = new ArrayList<>();
 
     public GamePanel(){
@@ -56,11 +55,41 @@ public class GamePanel extends JPanel {
         return mino;
     }
 
+    public void deleteLineAndAutoDrop(Block[] minoBlocks){
+        int counter = 0;
+        int deletedLines = 0;
+        int blocksInLine = (left_x + gameWidth) / Block.size;
+        ArrayList<Block> blocksToDelete = new ArrayList<>();
+
+        for(int i = 0; i < minoBlocks.length; i++){
+            for(Block block : staticBlocks){
+                if(block.y == minoBlocks[i].y){
+                    blocksToDelete.add(block);
+                    counter++;
+                }
+            }
+            if(counter == blocksInLine - 1){
+                for(Block block : blocksToDelete){
+                    block = null;
+                }
+                minoBlocks[i] = null;
+                deletedLines++;
+            }
+            counter = 0;
+            blocksToDelete = new ArrayList<>();
+        }
+
+        for(Block block : staticBlocks){
+            block.y += Block.size * deletedLines;
+        }
+    }
+
     public void update(){
         if(!currentMino.isActive){
             for (int i = 0; i < currentMino.blocks.length; i++){
                 staticBlocks.add(currentMino.blocks[i]);
             }
+            deleteLineAndAutoDrop(currentMino.blocks);
             currentMino = pickMino();
             currentMino.setCoordinates(start_x, start_y);
         }
@@ -75,7 +104,9 @@ public class GamePanel extends JPanel {
 
     public void drawStaticBlocks(Graphics2D g2){
         for(int i = 0; i < staticBlocks.size(); i++){
-            staticBlocks.get(i).draw(g2);
+            if(staticBlocks.get(i) != null){
+                staticBlocks.get(i).draw(g2);
+            }
         }
     }
 
