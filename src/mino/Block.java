@@ -7,6 +7,8 @@ import java.awt.*;
 public class Block extends Rectangle {
 
     public static final int size = 30;
+    public int x;
+    public int y;
     private Color c;
 
     public Block(Color c){

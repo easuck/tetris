@@ -22,6 +22,7 @@ public class GamePanel extends JPanel {
     public int start_y;
     Mino currentMino;
     public static ArrayList<Block> staticBlocks = new ArrayList<>();
+    public static boolean isGameOver = false;
 
     public GamePanel(){
         this.setPreferredSize(new Dimension(windowWidth, windowHeight));
@@ -84,6 +85,17 @@ public class GamePanel extends JPanel {
         }
     }
 
+    public void checkForGameOver(Block[] blocks){
+        for(Block sBlock : staticBlocks){
+            for(int i = 0; i < blocks.length; i++){
+                if(sBlock.x == blocks[i].x && sBlock.y == blocks[i].y){
+                    isGameOver = true;
+                    break;
+                }
+            }
+        }
+    }
+
     public void update(){
         if(!currentMino.isActive){
             for (int i = 0; i < currentMino.blocks.length; i++){
@@ -92,7 +104,7 @@ public class GamePanel extends JPanel {
             deleteLineAndAutoDrop(currentMino.blocks);
             currentMino = pickMino();
             currentMino.setCoordinates(start_x, start_y);
-            System.out.println(staticBlocks.size());
+            checkForGameOver(currentMino.blocks);
         }
         currentMino.update();
     }

@@ -34,7 +34,9 @@ public class GameManager implements Runnable{
             delta += (currentTime - lastTime) / drawInterval;
             lastTime = currentTime;
             if(delta >= 1){
-                panel.update();
+                if(!GamePanel.isGameOver){
+                    panel.update();
+                }
                 panel.repaint();
                 delta--;
             }
